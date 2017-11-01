@@ -1,5 +1,6 @@
 @students = []
 @courses = Array.new
+@student_courses = Hash.new
 
 class Student
   attr_accessor :name, :age 
@@ -43,13 +44,6 @@ def add_a_student
   puts "******* Student added *******" #adds a student
 end
 
-def list_students #lists students
-  puts "The students in the system are: "
-  @students.each_with_index do |student, index|
-    puts "#{index+1}. Name: #{student.name} :: Age: #{student.age}" 
-  end
-end
-
 def add_a_course
   puts "Enter the course name: "
   name = gets.chomp
@@ -60,7 +54,14 @@ def add_a_course
 
   @courses.push(course)
 
-  puts "******* Course added *******" #adds a course	
+  puts "******* Course added *******" #adds a course  
+end
+
+def list_students #lists students
+  puts "The students in the system are: "
+  @students.each_with_index do |student, index|
+    puts "#{index+1}. Name: #{student.name} :: Age: #{student.age}" 
+  end
 end
 
 def list_courses #lists students
@@ -69,6 +70,26 @@ def list_courses #lists students
     puts "#{index+1}. Name: #{course.name} :: Description: #{course.description}" 
   end
 end
+
+def assign_student_to_course
+  puts "Pick a student (Enter their ID): "
+  list_students
+  student_choice = gets.chomp.to_i
+
+  puts "Pick a course (Enter course ID): "
+  list_courses
+  course_choice = gets.chomp.to_i
+
+  @student_courses[@students[student_choice-1]] = @courses[course_choice-1]
+  
+  @student_courses.each do |key, value|
+    puts "#{key.name} is assigned to #{value.name}"
+  end
+
+
+
+
+end 
 
 while @choice != "E" do 
 	
@@ -83,7 +104,10 @@ while @choice != "E" do
     print_menu	
   elsif @choice == "4"
     list_courses
-    print_menu    	
+    print_menu 
+  elsif @choice == "5"
+    assign_student_to_course
+    print_menu      	
 	else
 	  puts "Please select from the menu"
 	  print_menu	
